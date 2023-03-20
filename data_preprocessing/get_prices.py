@@ -14,5 +14,6 @@ def download_prices(filename="META", ticker="META"):
     else:
         print("Directory already exists.")
     data.to_csv(directory + filename + ".csv")
+    data.head()
 
 
