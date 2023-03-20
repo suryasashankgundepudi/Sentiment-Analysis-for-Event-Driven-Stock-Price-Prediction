@@ -1,11 +1,13 @@
 import pandas as pd
 import datetime as dt
+import os
 
 
 def combine_headlines(ticker="META"):
+    directory = "../data/tickers/" + ticker + "/"
     # read in data and conduct basic data clean and rename columns
-    df_M = pd.read_csv(r'../data/' + ticker + '_article_titles.csv')
-    df_M_S = pd.read_csv(r'../data/' + ticker + '.csv', usecols=["Date", "Open", "Close"])
+    df_M = pd.read_csv(directory + ticker + '_article_titles.csv')
+    df_M_S = pd.read_csv(directory + ticker + '.csv', usecols=["Date", "Open", "Close"])
     df_M_S = df_M_S.rename(columns={'Date': 'publish_date'})
 
     df_M['publish_date'] = pd.to_datetime(df_M['publish_date'])
@@ -43,6 +45,13 @@ def combine_headlines(ticker="META"):
     data = data.sort_values(by='publish_date', ascending=True)
     data.reset_index(drop=True, inplace=True)
 
-    data.to_csv("../data/" + ticker + "_price_change.csv", sep=',', encoding='utf-8',
+    directory = "../data/tickers/" + ticker + "/"
+
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+        print("Directory created successfully!")
+    else:
+        print("Directory already exists.")
+    data.to_csv(directory + ticker + "_price_change.csv", sep=',', encoding='utf-8',
                 header=True)
 

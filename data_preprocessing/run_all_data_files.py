@@ -1,19 +1,12 @@
-from data_preprocessing.collect_reuters import *
-from data_preprocessing.get_prices import *
-from data_preprocessing.combine_head_stock import *
-import argparse
-import os
+from collect_reuters import *
+from get_prices import *
+from combine_head_stock import *
 
+ticker = "APPLE"
 
-parser = argparse.ArgumentParser(description='Sentiment analyzer')
-
-parser.add_argument('-a', action="store_true", default=False)
-
-parser.add_argument('--ticker', type=str, default= "META", help='Path to the text file.')
-
-args = parser.parse_args()
-
-print(args.ticker)
-#run_headlines(args.ticker)
-#download_prices(ticker)
-#combine_headlines(ticker)
+print("Collecting Headlines for " + ticker)
+run_headlines(ticker=ticker)
+print("Downloading closing prices for " + ticker)
+download_prices(filename=ticker, ticker="AAPL")
+print("Adding price changes for " + ticker)
+combine_headlines(ticker)

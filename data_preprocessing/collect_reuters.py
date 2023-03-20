@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import time
 import requests
+import os
 import warnings
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -124,9 +125,17 @@ def run_headlines(ticker="META"):
         article_sentiments = article_sentiments.append(pd.DataFrame(row, index=[0]))
         article_sentiments.reset_index(drop=True, inplace=True)
 
+
     # Save DataFrame
-    article_sentiments.to_pickle("../data/" + ticker + "_article_titles.pkl")
-    article_sentiments.to_csv("../data/" + ticker + "_article_titles.csv", sep=',', encoding='utf-8',
+    directory = "../data/tickers/" + ticker + "/"
+
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+        print("Directory created successfully!")
+    else:
+        print("Directory already exists.")
+    article_sentiments.to_pickle(directory + ticker + "_article_titles.pkl")
+    article_sentiments.to_csv(directory + ticker + "_article_titles.csv", sep=',', encoding='utf-8',
                               header=True)
 
     driver.quit()
