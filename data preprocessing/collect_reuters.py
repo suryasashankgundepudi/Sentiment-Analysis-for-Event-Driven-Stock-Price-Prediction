@@ -88,45 +88,45 @@ def get_newslinks(company, page_number):
 
 
 # Create empty list to append URLs
-ticker = "META"
-all_company_urls = []
-for page in range(0, 900, 20):
-    results = get_newslinks(ticker, page)
-    all_company_urls.extend(results)
+def run_headlines(ticker="META"):
+    all_company_urls = []
+    for page in range(0, 900, 20):
+        results = get_newslinks(ticker, page)
+        all_company_urls.extend(results)
 
-print("Collected URLS, forming dataframe")
-# Create a DataFrame to populate while iterating
-article_sentiments = pd.DataFrame({'ticker': [],
-                                   'publish_date': [],
-                                   'title': [],
-                                   'body_text': [],
-                                   'url': [],
-                                   'price_change': []})
-# Loop over all the articles
-for link in all_company_urls:
-    article = Article(link)
-    article.download()
+    print("Collected URLS, forming dataframe")
+    # Create a DataFrame to populate while iterating
+    article_sentiments = pd.DataFrame({'ticker': [],
+                                       'publish_date': [],
+                                       'title': [],
+                                       'body_text': [],
+                                       'url': [],
+                                       'price_change': []})
+    # Loop over all the articles
+    for link in all_company_urls:
+        article = Article(link)
+        article.download()
 
-    try:
-        article.parse()
-        text = article.text
-        date = find_date(link)
-    except:
-        print("skipped one link")
-        continue
+        try:
+            article.parse()
+            text = article.text
+            date = find_date(link)
+        except:
+            print("skipped one link")
+            continue
 
-    row = {'ticker': ticker, 'publish_date': date, 'title': article.title,
-           'body_text': article.text, 'url': link, 'price_change': 0}
+        row = {'ticker': ticker, 'publish_date': date, 'title': article.title,
+               'body_text': article.text, 'url': link, 'price_change': 0}
 
-    if all_company_urls.index(link) % 50 == 0:
-        print("Completed : ", all_company_urls.index(link), " out of ", len(all_company_urls))
+        if all_company_urls.index(link) % 50 == 0:
+            print("Completed : ", all_company_urls.index(link), " out of ", len(all_company_urls))
 
-    article_sentiments = article_sentiments.append(pd.DataFrame(row, index=[0]))
-    article_sentiments.reset_index(drop=True, inplace=True)
+        article_sentiments = article_sentiments.append(pd.DataFrame(row, index=[0]))
+        article_sentiments.reset_index(drop=True, inplace=True)
 
-# Save DataFrame
-article_sentiments.to_pickle("../data/" + ticker + "_article_titles.pkl")
-article_sentiments.to_csv("../data/" + ticker + "_article_titles.csv", sep=',', encoding='utf-8',
-                          header=True)
+    # Save DataFrame
+    article_sentiments.to_pickle("../data/" + ticker + "_article_titles.pkl")
+    article_sentiments.to_csv("../data/" + ticker + "_article_titles.csv", sep=',', encoding='utf-8',
+                              header=True)
 
-driver.quit()
+    driver.quit()

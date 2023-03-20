@@ -6,10 +6,10 @@ os.chdir("D:/PYTHON3/Sentiment-Analysis-for-Event-Driven-Stock-Price-Prediction/
 
 today = datetime.today().date()
 
-ticker = "META"
 
-data = yf.download(ticker, start="2016-01-01", end=today)
+def download_prices(ticker="META"):
+    data = yf.download(ticker, start="2016-01-01", end=today)
+    data.to_csv("../data/" + ticker + ".csv")
 
-data.to_csv("../data/" + ticker + ".csv")
 
 
