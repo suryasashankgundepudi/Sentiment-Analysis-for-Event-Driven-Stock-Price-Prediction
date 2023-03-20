@@ -67,8 +67,7 @@ def get_newslinks(company, page_number):
     for article_number in range(1, 21, 1):
         try:
             article = driver.find_element('xpath',
-                                          f'/html/body/div[1]/div/div[2]/div[2]/div/div[2]/div[2]/ul/li[{article_number}]/div')
-
+                                          f'/html/body/div[1]/div[2]/div[2]/div/div[2]/div[2]/ul/li[{article_number}]/div')
         except:
             print("didn't find element", end="  ")
             continue
@@ -125,8 +124,9 @@ for link in all_company_urls:
     article_sentiments = article_sentiments.append(pd.DataFrame(row, index=[0]))
     article_sentiments.reset_index(drop=True, inplace=True)
 
-driver.quit()
 # Save DataFrame
-article_sentiments.to_pickle("../data/" + ticker + "_article_sentiments_20210105.pkl")
-article_sentiments.to_csv("../data/" + ticker + "_article_sentiments_20210105.csv", sep=',', encoding='utf-8',
+article_sentiments.to_pickle("../data/" + ticker + "_article_titles.pkl")
+article_sentiments.to_csv("../data/" + ticker + "_article_titles.csv", sep=',', encoding='utf-8',
                           header=True)
+
+driver.quit()
