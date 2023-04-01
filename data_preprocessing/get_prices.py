@@ -1,3 +1,4 @@
+# Using yahoo finance for collecting stock prices
 import yfinance as yf
 from datetime import datetime
 import os

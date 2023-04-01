@@ -1,3 +1,4 @@
+# Reading the reuters headline's folder.
 import os
 
 output_file = "../data/titles.txt"
